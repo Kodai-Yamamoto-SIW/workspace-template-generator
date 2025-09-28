@@ -5,7 +5,7 @@ VS Code ワークスペーステンプレートを TypeScript で宣言し、ビ
 ## 特長
 
 - ドキュメントやスクリプトからテンプレート構造を宣言
-- ビルド時に `.workspace-launch/templates/<exercise>` 配下へ素材を自動生成
+- ビルド時に `.workspace-launch/templates/<workspaceId>` 配下へ素材を自動生成
 - VS Code の拡張 `workspace-launch-by-link` 用 deeplink を生成
 - 依存パッケージなしで Node.js 18 以降で動作
 
@@ -27,7 +27,7 @@ import {
 } from '@kodai-yamamoto-siw/workspace-template-generator';
 
 const launchUrl = createWorkspaceTemplate({
-  exercise: 'hello-world',
+  workspaceId: 'hello-world',
   structure: [
     directory('src', [file('main.py', 'print("Hello")')]),
     file(

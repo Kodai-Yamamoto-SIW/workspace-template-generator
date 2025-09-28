@@ -24,15 +24,15 @@ type TemplateFileEntry = {
 };
 
 export type CreateWorkspaceTemplateOptions = {
-  exercise: string;
+  workspaceId: string;
   structure: TemplateNode[];
   server?: string;
-  student?: string;
+  ownerId?: string;
   token?: string;
 };
 
 type TemplateSpec = {
-  exercise: string;
+  workspaceId: string;
   directories: string[];
   files: TemplateFileEntry[];
 };
@@ -73,25 +73,25 @@ export function file(
 export function createWorkspaceTemplate(
   options: CreateWorkspaceTemplateOptions
 ): string {
-  const { exercise, structure, server, student, token } = options;
+  const { workspaceId, structure, server, ownerId, token } = options;
 
   const parsed = collectNodes(structure);
   const directories = Array.from(parsed.directories).sort();
   const files = [...parsed.files].sort((a, b) => a.path.localeCompare(b.path));
 
   ensureTemplateMaterialized({
-    exercise,
+    workspaceId,
     directories,
     files,
   });
 
   const launchServer = resolveServer(server);
-  const launchStudent = student ?? 'student';
+  const launchOwnerId = ownerId ?? 'ownerId';
 
   const params = new URLSearchParams({
     server: launchServer,
-    exercise,
-    student: launchStudent,
+    workspaceId,
+    ownerId: launchOwnerId,
   });
   if (token) {
     params.set('token', token);
@@ -238,12 +238,12 @@ function ensureTemplateMaterialized(spec: TemplateSpec): void {
       .sort((a, b) => a.path.localeCompare(b.path)),
   });
 
-  const cached = registry.specs.get(spec.exercise);
+  const cached = registry.specs.get(spec.workspaceId);
   if (cached === normalizedSpecKey) {
     return;
   }
 
-  registry.specs.set(spec.exercise, normalizedSpecKey);
+  registry.specs.set(spec.workspaceId, normalizedSpecKey);
 
   const fs: typeof import('fs') = nodeRequire('fs');
   const path: typeof import('path') = nodeRequire('path');
@@ -253,23 +253,23 @@ function ensureTemplateMaterialized(spec: TemplateSpec): void {
     : path.resolve('.');
   const dataRoot = path.join(siteRoot, '.workspace-launch');
   const templatesRoot = path.join(dataRoot, 'templates');
-  const exerciseDir = path.join(templatesRoot, sanitize(spec.exercise));
+  const workspaceIdDir = path.join(templatesRoot, sanitize(spec.workspaceId));
 
   fs.mkdirSync(templatesRoot, { recursive: true });
-  fs.rmSync(exerciseDir, { recursive: true, force: true });
-  fs.mkdirSync(exerciseDir, { recursive: true });
+  fs.rmSync(workspaceIdDir, { recursive: true, force: true });
+  fs.mkdirSync(workspaceIdDir, { recursive: true });
 
   spec.directories.forEach((dir) => {
     if (!dir) return;
     const segments = splitPathSegments(dir);
     if (segments.length === 0) return;
-    const dirPath = path.join(exerciseDir, ...segments);
+    const dirPath = path.join(workspaceIdDir, ...segments);
     fs.mkdirSync(dirPath, { recursive: true });
   });
 
   spec.files.forEach((file) => {
     const segments = splitPathSegments(file.path);
-    const filePath = path.join(exerciseDir, ...segments);
+    const filePath = path.join(workspaceIdDir, ...segments);
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
     const buffer =
       file.encoding === 'base64'
@@ -278,9 +278,9 @@ function ensureTemplateMaterialized(spec: TemplateSpec): void {
     fs.writeFileSync(filePath, buffer);
   });
 
-  const relativePath = path.relative(siteRoot, exerciseDir) || exerciseDir;
+  const relativePath = path.relative(siteRoot, workspaceIdDir) || workspaceIdDir;
   console.log(
-    `[WorkspaceTemplate] Materialized template "${spec.exercise}" at ${relativePath}`
+    `[WorkspaceTemplate] Materialized template "${spec.workspaceId}" at ${relativePath}`
   );
 }
 

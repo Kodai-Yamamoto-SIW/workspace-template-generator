@@ -1,7 +1,7 @@
 {
   "name": "@kodai-yamamoto-siw/workspace-template-generator",
   "version": "0.1.0",
-  "description": "Generate workspace templates and deep links for educational exercises.",
+  "description": "Generate workspace templates and deep links for educational workspaceIds.",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
