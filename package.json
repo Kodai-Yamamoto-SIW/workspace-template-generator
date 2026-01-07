@@ -1,5 +1,5 @@
 {
-  "name": "@kodai-yamamoto-siw/workspace-template-generator",
+  "name": "@metyatech/workspace-template-generator",
   "version": "0.1.0",
   "description": "Generate workspace templates and deep links for educational workspaceIds.",
   "type": "module",

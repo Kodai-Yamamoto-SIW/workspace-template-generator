@@ -1,4 +1,4 @@
-# @kodai-yamamoto-siw/workspace-template-generator
+# @metyatech/workspace-template-generator
 
 VS Code ワークスペーステンプレートを TypeScript で宣言し、ビルド時にファイルを生成して VS Code から開ける deeplink を返すユーティリティです。
 
@@ -12,7 +12,7 @@ VS Code ワークスペーステンプレートを TypeScript で宣言し、ビ
 ## インストール
 
 ```bash
-npm install @kodai-yamamoto-siw/workspace-template-generator
+npm install @metyatech/workspace-template-generator
 ```
 
 ローカルパスから取り込みたい場合は、Git サブモジュール/ワークスペースを利用して `file:` 参照してください。
@@ -24,7 +24,7 @@ import {
   createWorkspaceTemplate,
   directory,
   file,
-} from '@kodai-yamamoto-siw/workspace-template-generator';
+} from '@metyatech/workspace-template-generator';
 
 const launchUrl = createWorkspaceTemplate({
   workspaceId: 'hello-world',
