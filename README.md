@@ -20,20 +20,13 @@ npm install @metyatech/workspace-template-generator
 ## 使い方
 
 ```ts
-import {
-  createWorkspaceTemplate,
-  directory,
-  file,
-} from '@metyatech/workspace-template-generator';
+import { createWorkspaceTemplate, directory, file } from '@metyatech/workspace-template-generator';
 
 const launchUrl = createWorkspaceTemplate({
   workspaceId: 'hello-world',
   structure: [
     directory('src', [file('main.py', 'print("Hello")')]),
-    file(
-      'README.md',
-      `# Hello Workspace\n\n1. VS Code のリンクをクリックします。`
-    ),
+    file('README.md', `# Hello Workspace\n\n1. VS Code のリンクをクリックします。`),
   ],
 });
 
