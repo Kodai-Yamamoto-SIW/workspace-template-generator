@@ -35,6 +35,38 @@ console.log(launchUrl);
 
 テンプレートは Node.js 上でのみファイルシステムへ書き込まれます。ブラウザなどでインポートした場合は副作用が発生しません。
 
+## オプション設定 (CreateWorkspaceTemplateOptions)
+
+`createWorkspaceTemplate` 関数はオプションのプロパティを持つ設定オブジェクトを受け取ります:
+
+- `server?: string`
+  - 説明: 生成される deeplink に埋め込むサーバーのベース URL。指定されている場合はこの値が優先されます。
+  - デフォルト: 指定がない場合は環境変数 `WORKSPACE_LAUNCH_SERVER` が使用されます。環境変数も未設定の場合、デフォルトは `http://localhost:8787` です。
+
+- `ownerId?: string`
+  - 説明: deeplink の `ownerId` クエリパラメータ。指定がない場合のデフォルトは `ownerId` です。
+
+- `token?: string`
+  - 説明: 認証が必要な場合に deeplink に `token` クエリパラメータを追加します。指定がない場合はクエリに含まれません。
+
+### 環境変数の挙動
+
+- `WORKSPACE_LAUNCH_SERVER`: `server` オプションが指定されなかった場合のデフォルトとして使用されます。未設定の場合は `http://localhost:8787` が使われます。
+
+#### 使用例
+
+```ts
+createWorkspaceTemplate({
+  workspaceId: 'hello-world',
+  structure: [
+    /* ... */
+  ],
+  server: 'https://workspace.example.com',
+  ownerId: 'my-owner',
+  token: 'secret-token',
+});
+```
+
 ## スクリプト
 
 - `npm run build`: TypeScript を `dist/` へコンパイルします
