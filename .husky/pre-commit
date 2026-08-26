@@ -1,1 +1,1 @@
-npm run verify
+npm run verify && npm run compose && git add AGENTS.md
